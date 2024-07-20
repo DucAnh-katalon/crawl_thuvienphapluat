@@ -1,31 +1,8 @@
-import requests
-from bs4 import BeautifulSoup
-import random, time
-import os
-
-
 import logging
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-logger.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-file_handler = logging.FileHandler('crawler.log')
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
-
-def custom_load_page(url):
-    time.sleep(random.randint(1, 3))
-    print(f"Requesting {url}")
-    response = requests.get(url)
-    try:
-        soup = BeautifulSoup(response.text, "html.parser")
-    except Exception as e:
-        soup = None
-        print(f"Error parsing {url}: {e}")
-        logger.error(f"Error parsing {url}: {e}")
-        open("error.txt", "a+").write(f"{url}\n {e}\n")
-    return response, soup
+import os
+from utils import custom_load_page
+from bs4 import BeautifulSoup
 
 def do_get_metatadata(soup):
     divThuocTinh = soup.find("div", id="divThuocTinh")
